@@ -7,17 +7,24 @@ impl Day2 {
         Self {}
     }
 
-    pub fn run(self) {
+    pub fn run(&self) {
         self.part_1();
+        self.part_2();
     }
 
     // See: https://adventofcode.com/2023/day/2
-    fn part_1(self) -> Self {
+    fn part_1(&self) {
         let contents = fs::read_to_string("inputs/day_2_part_1.txt").unwrap();
         let games = contents.lines().map(Game::parse);
         let result: u32 = games.filter(|g| g.is_valid()).map(|g| g.id).sum();
-        println!("Result: {}", result);
-        self
+        println!("Part 1 - Result: {}", result);
+    }
+
+    fn part_2(&self) {
+        let contents = fs::read_to_string("inputs/day_2_part_2.txt").unwrap();
+        let games = contents.lines().map(Game::parse);
+        let result: u32 = games.map(|g| g.power()).sum();
+        println!("Part 2 - Result: {}", result);
     }
 }
 
@@ -64,6 +71,36 @@ impl Game {
 
     fn is_valid(&self) -> bool {
         self.rounds.iter().all(|r| r.is_valid())
+    }
+
+    fn power(&self) -> u32 {
+        let mut green: u32 = 1;
+        let mut blue: u32 = 1;
+        let mut red: u32 = 1;
+
+        for round in &self.rounds {
+            for roll in &round.rolls {
+                match *roll {
+                    Color::Blue(v) => {
+                        if blue < v {
+                            blue = v
+                        }
+                    }
+                    Color::Red(v) => {
+                        if red < v {
+                            red = v
+                        }
+                    }
+                    Color::Green(v) => {
+                        if green < v {
+                            green = v
+                        }
+                    }
+                }
+            }
+        }
+
+        blue * red * green
     }
 }
 
