@@ -1,3 +1,7 @@
+mod challenges;
+
 fn main() {
-    println!("Hello, world!");
+    let day_1 = challenges::day_1::Day1::new();
+    println!("###### Day 1 #######");
+    day_1.run();
 }
