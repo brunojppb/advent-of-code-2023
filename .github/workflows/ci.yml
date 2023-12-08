@@ -1,0 +1,33 @@
+on: [push]
+
+name: Rust CI
+
+jobs:
+  build_and_test:
+    name: Cargo
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Git checkout"
+        uses: actions/checkout@v2
+
+      - name: "Rust setup"
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: "Cargo cache"
+        uses: Swatinem/rust-cache@v2
+
+      # - name: "Add Clippy"
+      #   run: rustup component add clippy
+
+      # - name: "Clippy check"
+      #   uses: actions-rs/clippy-check@v1
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     args: --all-features
+
+      - name: "cargo run"
+        uses: actions-rs/cargo@v1
+        with:
+          command: run
