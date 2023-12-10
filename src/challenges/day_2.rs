@@ -14,14 +14,14 @@ impl Day2 {
 
     // See: https://adventofcode.com/2023/day/2
     fn part_1(&self) {
-        let contents = fs::read_to_string("inputs/day_2_part_1.txt").unwrap();
+        let contents = fs::read_to_string("inputs/day_2.txt").unwrap();
         let games = contents.lines().map(Game::parse);
         let result: u32 = games.filter(|g| g.is_valid()).map(|g| g.id).sum();
         println!("Part 1 - Result: {}", result);
     }
 
     fn part_2(&self) {
-        let contents = fs::read_to_string("inputs/day_2_part_2.txt").unwrap();
+        let contents = fs::read_to_string("inputs/day_2.txt").unwrap();
         let games = contents.lines().map(Game::parse);
         let result: u32 = games.map(|g| g.power()).sum();
         println!("Part 2 - Result: {}", result);

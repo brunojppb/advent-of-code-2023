@@ -13,7 +13,7 @@ impl Day1 {
 
     // See: https://adventofcode.com/2023/day/1
     fn part_1(self) -> Self {
-        let contents = fs::read_to_string("inputs/day_1_part_1.txt").unwrap();
+        let contents = fs::read_to_string("inputs/day_1.txt").unwrap();
         let mut numbers: Vec<usize> = Vec::with_capacity(contents.lines().count());
 
         for line in contents.lines() {
@@ -57,7 +57,7 @@ impl Day1 {
             ("nine", 9),
         ]);
 
-        let contents = fs::read_to_string("inputs/day_1_part_2.txt").unwrap();
+        let contents = fs::read_to_string("inputs/day_1.txt").unwrap();
         let mut numbers: Vec<usize> = Vec::new();
 
         for line in contents.lines() {
