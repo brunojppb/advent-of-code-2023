@@ -13,3 +13,5 @@ Here are my answers:
 - [x] [Day 3: Gear Ratios](./src/challenges/day_3.rs)
   - [x] [Part 1](https://github.com/brunojppb/advent-of-code-2023/blob/885ae4b651a8d1704e8332ea77727b9f2046c595/src/challenges/day_3.rs#L19)
   - [x] [Part 2](https://github.com/brunojppb/advent-of-code-2023/blob/885ae4b651a8d1704e8332ea77727b9f2046c595/src/challenges/day_3.rs#L24)
+- [x] [Day 4: Scratchcards](./src/challenges/day_4.rs)
+  - [x] [Part 1](https://github.com/brunojppb/advent-of-code-2023/blob/87890b69fe3c71eb9b5e216657b95936e2193295/src/challenges/day_4.rs#L16)
