@@ -16,4 +16,8 @@ fn main() {
     let day_4 = challenges::day_4::Day4::new();
     println!("###### Day 4 #######");
     day_4.run();
+
+    let day_5 = challenges::day_5::Day5::new();
+    println!("###### Day 5 #######");
+    day_5.run();
 }

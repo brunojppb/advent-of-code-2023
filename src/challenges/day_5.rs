@@ -1,0 +1,133 @@
+use std::fs;
+
+pub struct Day5 {}
+
+impl Day5 {
+    pub fn new() -> Self {
+        Self {}
+    }
+
+    pub fn run(&self) {
+        self.part_1();
+        self.part_2();
+    }
+
+    // See: https://adventofcode.com/2023/day/5
+    fn part_1(&self) {
+        let almanac = self.parse();
+
+        println!("Part 1 - Result: {:#?}", almanac.lowest_location());
+    }
+
+    fn part_2(&self) {
+        println!("Part 2 - Result: {:?}", "TODO");
+    }
+
+    fn parse(&self) -> Almanac {
+        let contents = fs::read_to_string("inputs/day_5.txt").unwrap();
+        Almanac::new(&contents)
+    }
+}
+
+struct Almanac {
+    seeds: Vec<usize>,
+    maps: Vec<SourceToDest>,
+}
+
+impl Almanac {
+    fn new(content: &str) -> Self {
+        let mut seeds: Vec<usize> = Vec::new();
+        let mut maps: Vec<SourceToDest> = Vec::new();
+        let mut acc: Vec<MapRange> = Vec::new();
+
+        for (index, line) in content.lines().enumerate() {
+            if index == 0 {
+                seeds = line.trim().split(": ").collect::<Vec<&str>>()[1]
+                    .trim()
+                    .split(' ')
+                    .map(|n| n.parse::<usize>().unwrap())
+                    .collect();
+                continue;
+            }
+
+            let next_char = line.chars().next();
+
+            if next_char.is_some_and(|c| c.is_ascii_digit()) {
+                let map_range = MapRange::new(line);
+                acc.push(map_range);
+                continue;
+            }
+
+            if next_char.is_some_and(|c| c.is_alphabetic() || c == '\n') && !acc.is_empty() {
+                let s = SourceToDest::new(acc);
+                maps.push(s);
+                acc = Vec::new();
+            }
+        }
+
+        if !acc.is_empty() {
+            let s = SourceToDest::new(acc);
+            maps.push(s);
+        }
+
+        Self { seeds, maps }
+    }
+
+    fn lowest_location(&self) -> usize {
+        let mut locations: Vec<usize> = Vec::with_capacity(self.seeds.len());
+
+        for seed in &self.seeds {
+            let mut temp_position = *seed;
+
+            for map in &self.maps {
+                for map_range in &map.ranges {
+                    let range = map_range.source..=(map_range.source + map_range.range);
+                    if range.contains(&temp_position) {
+                        let next_position =
+                            map_range.destination + (temp_position - map_range.source);
+                        temp_position = next_position;
+                        break;
+                    }
+                }
+            }
+            locations.push(temp_position);
+        }
+
+        *locations.iter().min().unwrap()
+    }
+}
+
+#[derive(Debug)]
+struct MapRange {
+    source: usize,
+    destination: usize,
+    range: usize,
+}
+
+impl MapRange {
+    fn new(input: &str) -> Self {
+        let values: Vec<&str> = input.split(' ').collect();
+        let (destination, source, range) = (
+            values[0].parse::<usize>().unwrap(),
+            values[1].parse::<usize>().unwrap(),
+            values[2].parse::<usize>().unwrap(),
+        );
+
+        Self {
+            source,
+            destination,
+            range,
+        }
+    }
+}
+
+#[derive(Debug)]
+struct SourceToDest {
+    ranges: Vec<MapRange>,
+}
+
+impl SourceToDest {
+    fn new(ranges: Vec<MapRange>) -> Self {
+        Self { ranges }
+    }
+}
