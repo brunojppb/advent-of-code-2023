@@ -1,4 +1,6 @@
+use rayon::prelude::*;
 use std::fs;
+use std::time::Instant;
 
 pub struct Day5 {}
 
@@ -9,8 +11,7 @@ impl Day5 {
 
     pub fn run(&self) {
         self.part_1();
-        // @TODO: Figure out how to do it without brute-force
-        // self.part_2();
+        self.part_2();
     }
 
     // See: https://adventofcode.com/2023/day/5
@@ -99,40 +100,81 @@ impl Almanac {
     }
 
     fn lowest_location_in_pairs(&self) -> usize {
-        let mut smallest_location: Option<usize> = None;
+        let start = Instant::now();
+        let small_values = self
+            .seeds
+            .par_iter()
+            .enumerate()
+            .fold(
+                || {
+                    let acc: Vec<usize> = Vec::new();
+                    acc
+                },
+                |mut acc, (index, seed_or_range)| {
+                    if index % 2 != 0 {
+                        return acc;
+                    }
 
-        for (index, seed_or_range) in self.seeds.iter().enumerate() {
-            if index % 2 != 0 {
-                continue;
-            }
+                    let mut smallest_location: Option<usize> = None;
 
-            for seed in *seed_or_range..=(seed_or_range + self.seeds[index + 1]) {
-                let mut temp_position = seed;
-                println!("Checking seed {}", seed);
+                    println!(
+                        "index {}: seed {} with range {}",
+                        index,
+                        seed_or_range,
+                        self.seeds[index + 1]
+                    );
 
-                for map in &self.maps {
-                    for map_range in &map.ranges {
-                        let range = map_range.source..=(map_range.source + map_range.range);
-                        if range.contains(&temp_position) {
-                            let next_position =
-                                map_range.destination + (temp_position - map_range.source);
-                            temp_position = next_position;
-                            break;
+                    for seed in *seed_or_range..(seed_or_range + self.seeds[index + 1]) {
+                        let mut temp_position = seed;
+                        // println!("Checking seed {}", seed);
+
+                        for map in &self.maps {
+                            for map_range in &map.ranges {
+                                let range = map_range.source..(map_range.source + map_range.range);
+                                if range.contains(&temp_position) {
+                                    let next_position =
+                                        map_range.destination + (temp_position - map_range.source);
+                                    temp_position = next_position;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if let Some(loc) = smallest_location {
+                            if temp_position < loc {
+                                smallest_location = Some(temp_position);
+                            }
+                        } else {
+                            smallest_location = Some(temp_position);
                         }
                     }
-                }
 
-                if let Some(loc) = smallest_location {
-                    if temp_position < loc {
-                        smallest_location = Some(temp_position);
-                    }
-                } else {
-                    smallest_location = Some(temp_position);
-                }
+                    acc.push(smallest_location.unwrap());
+                    acc
+                },
+            )
+            .reduce(
+                || {
+                    let acc: Vec<usize> = Vec::new();
+                    acc
+                },
+                |mut acc, next| {
+                    acc.extend(next);
+                    acc
+                },
+            );
+
+        let result = small_values.iter().fold(usize::MAX, |acc, next| {
+            if *next < acc {
+                return *next;
             }
-        }
+            acc
+        });
 
-        smallest_location.unwrap()
+        let duration = start.elapsed();
+        println!("Time spent brute-forcing it: {:?}", duration);
+
+        result
     }
 }
 
