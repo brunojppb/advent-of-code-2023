@@ -17,4 +17,4 @@ Here are my answers:
   - [x] [Part 1](./src/challenges/day_4.rs#L16)
 - [x] [Day 5: If You Give A Seed A Fertilizer](./src/challenges/day_5.rs)
   - [x] [Part 1](/src/challenges/day_5.rs#L79)
-  - [x] [Part 1](/src/challenges/day_5.rs#L102)
+  - [x] [Part 2](/src/challenges/day_5.rs#L102)
