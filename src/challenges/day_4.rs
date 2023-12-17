@@ -1,4 +1,4 @@
-use std::fs;
+use std::{fs, time::Instant};
 
 pub struct Day4 {}
 
@@ -8,8 +8,12 @@ impl Day4 {
     }
 
     pub fn run(&self) {
+        let start = Instant::now();
         self.part_1();
+        println!("Part 1 time: {:?}", start.elapsed());
+        let start = Instant::now();
         self.part_2();
+        println!("Part 2 time: {:?}", start.elapsed());
     }
 
     // See: https://adventofcode.com/2023/day/3

@@ -10,8 +10,12 @@ impl Day5 {
     }
 
     pub fn run(&self) {
+        let start = Instant::now();
         self.part_1();
+        println!("Part 1 time: {:?}", start.elapsed());
+        let start = Instant::now();
         self.part_2();
+        println!("Part 2 time: {:?}", start.elapsed());
     }
 
     // See: https://adventofcode.com/2023/day/5
@@ -100,7 +104,6 @@ impl Almanac {
     }
 
     fn lowest_location_in_pairs(&self) -> usize {
-        let start = Instant::now();
         let small_values = self
             .seeds
             .par_iter()
@@ -117,12 +120,12 @@ impl Almanac {
 
                     let mut smallest_location: Option<usize> = None;
 
-                    println!(
-                        "index {}: seed {} with range {}",
-                        index,
-                        seed_or_range,
-                        self.seeds[index + 1]
-                    );
+                    // println!(
+                    //     "index {}: seed {} with range {}",
+                    //     index,
+                    //     seed_or_range,
+                    //     self.seeds[index + 1]
+                    // );
 
                     for seed in *seed_or_range..(seed_or_range + self.seeds[index + 1]) {
                         let mut temp_position = seed;
@@ -170,9 +173,6 @@ impl Almanac {
             }
             acc
         });
-
-        let duration = start.elapsed();
-        println!("Time spent brute-forcing it: {:?}", duration);
 
         result
     }

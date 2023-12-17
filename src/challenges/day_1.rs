@@ -1,3 +1,4 @@
+use std::time::Instant;
 use std::{collections::HashMap, fs};
 
 pub struct Day1 {}
@@ -8,11 +9,16 @@ impl Day1 {
     }
 
     pub fn run(self) {
-        self.part_1().part_2();
+        let start = Instant::now();
+        self.part_1();
+        println!("Part 1 time: {:?}", start.elapsed());
+        let start = Instant::now();
+        self.part_2();
+        println!("Part 2 time: {:?}", start.elapsed());
     }
 
     // See: https://adventofcode.com/2023/day/1
-    fn part_1(self) -> Self {
+    fn part_1(&self) {
         let contents = fs::read_to_string("inputs/day_1.txt").unwrap();
         let mut numbers: Vec<usize> = Vec::with_capacity(contents.lines().count());
 
@@ -41,10 +47,9 @@ impl Day1 {
         }
 
         println!("Part 1 - Result: {}", numbers.iter().sum::<usize>());
-        self
     }
 
-    fn part_2(self) -> Self {
+    fn part_2(&self) {
         let digits = HashMap::from([
             ("one", 1),
             ("two", 2),
@@ -90,6 +95,5 @@ impl Day1 {
         }
 
         println!("Part 2 - Result: {}", numbers.into_iter().sum::<usize>());
-        self
     }
 }

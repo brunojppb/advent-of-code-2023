@@ -1,6 +1,7 @@
 use std::{
     collections::{HashMap, HashSet},
     fs,
+    time::Instant,
 };
 
 pub struct Day3 {}
@@ -11,8 +12,12 @@ impl Day3 {
     }
 
     pub fn run(&self) {
+        let start = Instant::now();
         self.part_1();
+        println!("Part 1 time: {:?}", start.elapsed());
+        let start = Instant::now();
         self.part_2();
+        println!("Part 2 time: {:?}", start.elapsed());
     }
 
     // See: https://adventofcode.com/2023/day/3
