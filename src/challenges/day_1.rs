@@ -1,4 +1,3 @@
-use std::time::Instant;
 use std::{collections::HashMap, fs};
 
 pub struct Day1 {}
@@ -8,17 +7,8 @@ impl Day1 {
         Self {}
     }
 
-    pub fn run(self) {
-        let start = Instant::now();
-        self.part_1();
-        println!("Part 1 time: {:?}", start.elapsed());
-        let start = Instant::now();
-        self.part_2();
-        println!("Part 2 time: {:?}", start.elapsed());
-    }
-
     // See: https://adventofcode.com/2023/day/1
-    fn part_1(&self) {
+    pub fn part_1(&self) -> usize {
         let contents = fs::read_to_string("inputs/day_1.txt").unwrap();
         let mut numbers: Vec<usize> = Vec::with_capacity(contents.lines().count());
 
@@ -46,10 +36,10 @@ impl Day1 {
             }
         }
 
-        println!("Part 1 - Result: {}", numbers.iter().sum::<usize>());
+        numbers.iter().sum::<usize>()
     }
 
-    fn part_2(&self) {
+    fn part_2(&self) -> usize {
         let digits = HashMap::from([
             ("one", 1),
             ("two", 2),
@@ -94,6 +84,25 @@ impl Day1 {
             );
         }
 
-        println!("Part 2 - Result: {}", numbers.into_iter().sum::<usize>());
+        numbers.into_iter().sum::<usize>()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part_1() {
+        let day_1 = Day1::new();
+        let result = day_1.part_1();
+        assert_eq!(result, 54081);
+    }
+
+    #[test]
+    fn part_2() {
+        let day_1 = Day1::new();
+        let result = day_1.part_2();
+        assert_eq!(result, 54649);
     }
 }

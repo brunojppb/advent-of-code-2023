@@ -21,19 +21,19 @@ impl Day3 {
     }
 
     // See: https://adventofcode.com/2023/day/3
-    fn part_1(&self) {
+    fn part_1(&self) -> usize {
         let (numbers, _) = self.get_values();
-        println!("Part 1 - Result: {:?}", numbers.iter().sum::<usize>());
+        numbers.iter().sum::<usize>()
     }
 
-    fn part_2(&self) {
+    fn part_2(&self) -> usize {
         let (_, adjacent_parts) = self.get_values();
         let result: usize = adjacent_parts
             .values()
             .filter(|s| s.len() == 2)
             .map(|s| s.iter().fold(1, |acc, v| v * acc))
             .sum();
-        println!("Part 2 - Result: {:?}", result);
+        result
     }
 
     fn get_values(&self) -> (Vec<usize>, HashMap<String, HashSet<usize>>) {
@@ -217,5 +217,24 @@ struct CharAt {
 impl CharAt {
     fn new(row: usize, col: usize, value: char) -> Self {
         Self { row, col, value }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part_1() {
+        let day_3 = Day3::new();
+        let result = day_3.part_1();
+        assert_eq!(result, 535078);
+    }
+
+    #[test]
+    fn part_2() {
+        let day_3 = Day3::new();
+        let result = day_3.part_2();
+        assert_eq!(result, 75312571);
     }
 }

@@ -30,8 +30,8 @@ jobs:
       #     token: ${{ secrets.GITHUB_TOKEN }}
       #     args: --all-features
 
-      - name: "cargo run"
+      - name: "cargo test"
         uses: actions-rs/cargo@v1
         with:
-          command: run
+          command: test
           args: --release

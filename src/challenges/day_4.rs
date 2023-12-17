@@ -17,14 +17,15 @@ impl Day4 {
     }
 
     // See: https://adventofcode.com/2023/day/3
-    fn part_1(&self) {
+    fn part_1(&self) -> usize {
         let cards = self.parse();
         let points: usize = cards.iter().map(|c| c.points()).sum();
-        println!("Part 1 - Result: {:?}", points);
+        points
     }
 
-    fn part_2(&self) {
+    fn part_2(&self) -> usize {
         println!("Part 2 - Result: {:?}", "TODO");
+        1
     }
 
     fn parse(&self) -> Vec<Card> {
@@ -74,5 +75,25 @@ impl Card {
         }
 
         points
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part_1() {
+        let day_4 = Day4::new();
+        let result = day_4.part_1();
+        assert_eq!(result, 20407);
+    }
+
+    #[ignore = "Not implemented yet"]
+    #[test]
+    fn part_2() {
+        let day_4 = Day4::new();
+        let result = day_4.part_2();
+        assert_eq!(result, 1);
     }
 }

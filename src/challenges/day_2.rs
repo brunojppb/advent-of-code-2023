@@ -1,4 +1,4 @@
-use std::{fs, time::Instant};
+use std::fs;
 
 pub struct Day2 {}
 
@@ -7,28 +7,19 @@ impl Day2 {
         Self {}
     }
 
-    pub fn run(&self) {
-        let start = Instant::now();
-        self.part_1();
-        println!("Part 1 time: {:?}", start.elapsed());
-        let start = Instant::now();
-        self.part_2();
-        println!("Part 2 time: {:?}", start.elapsed());
-    }
-
     // See: https://adventofcode.com/2023/day/2
-    fn part_1(&self) {
+    fn part_1(&self) -> usize {
         let contents = fs::read_to_string("inputs/day_2.txt").unwrap();
         let games = contents.lines().map(Game::parse);
         let result: u32 = games.filter(|g| g.is_valid()).map(|g| g.id).sum();
-        println!("Part 1 - Result: {}", result);
+        result as usize
     }
 
-    fn part_2(&self) {
+    fn part_2(&self) -> usize {
         let contents = fs::read_to_string("inputs/day_2.txt").unwrap();
         let games = contents.lines().map(Game::parse);
         let result: u32 = games.map(|g| g.power()).sum();
-        println!("Part 2 - Result: {}", result);
+        result as usize
     }
 }
 
@@ -133,5 +124,24 @@ impl Round {
             Color::Red(v) => v <= MAX_RED_CUBES,
             Color::Green(v) => v <= MAX_GREEN_CUBES,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part_1() {
+        let day_2 = Day2::new();
+        let result = day_2.part_1();
+        assert_eq!(result, 2348);
+    }
+
+    #[test]
+    fn part_2() {
+        let day_2 = Day2::new();
+        let result = day_2.part_2();
+        assert_eq!(result, 76008);
     }
 }

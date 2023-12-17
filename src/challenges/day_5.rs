@@ -1,6 +1,5 @@
 use rayon::prelude::*;
 use std::fs;
-use std::time::Instant;
 
 pub struct Day5 {}
 
@@ -9,25 +8,13 @@ impl Day5 {
         Self {}
     }
 
-    pub fn run(&self) {
-        let start = Instant::now();
-        self.part_1();
-        println!("Part 1 time: {:?}", start.elapsed());
-        let start = Instant::now();
-        self.part_2();
-        println!("Part 2 time: {:?}", start.elapsed());
-    }
-
     // See: https://adventofcode.com/2023/day/5
-    fn part_1(&self) {
-        let almanac = self.parse();
-
-        println!("Part 1 - Result: {:#?}", almanac.lowest_location());
+    fn part_1(&self) -> usize {
+        self.parse().lowest_location()
     }
 
-    fn part_2(&self) {
-        let almanac = self.parse();
-        println!("Part 2 - Result: {:?}", almanac.lowest_location_in_pairs());
+    fn part_2(&self) -> usize {
+        self.parse().lowest_location_in_pairs()
     }
 
     fn parse(&self) -> Almanac {
@@ -210,5 +197,25 @@ struct SourceToDest {
 impl SourceToDest {
     fn new(ranges: Vec<MapRange>) -> Self {
         Self { ranges }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn part_1() {
+        let day_5 = Day5::new();
+        let result = day_5.part_1();
+        assert_eq!(result, 177942185);
+    }
+
+    // #[ignore = "Day 5 - Part 2 brute-force solution, it takes too long"]
+    #[test]
+    fn part_2() {
+        let day_5 = Day5::new();
+        let result = day_5.part_2();
+        assert_eq!(result, 69841803);
     }
 }
