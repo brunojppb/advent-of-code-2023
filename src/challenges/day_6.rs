@@ -1,5 +1,5 @@
+use rayon::prelude::*;
 use std::fs;
-
 pub struct Day6 {}
 
 impl Day6 {
@@ -9,18 +9,18 @@ impl Day6 {
 
     // See: https://adventofcode.com/2023/day/5
     fn part_1(&self) -> usize {
-        let races = self.parse();
+        let (races, _) = self.parse();
         races
             .iter()
             .fold(1, |acc, race| acc * race.ways_to_beat_the_record())
     }
 
     fn part_2(&self) -> usize {
-        println!("TODO!");
-        1
+        let (_, race) = self.parse();
+        race.ways_to_beat_the_record()
     }
 
-    fn parse(&self) -> Vec<Race> {
+    fn parse(&self) -> (Vec<Race>, Race) {
         let contents = fs::read_to_string("inputs/day_6.txt").unwrap();
         let mut times: Vec<usize> = Vec::new();
         let mut distances: Vec<usize> = Vec::new();
@@ -47,7 +47,25 @@ impl Day6 {
             races.push(Race::new(time, distance));
         }
 
-        races
+        (
+            races,
+            Race::new(
+                times
+                    .iter()
+                    .map(|i| i.to_string())
+                    .collect::<Vec<String>>()
+                    .join("")
+                    .parse::<usize>()
+                    .unwrap(),
+                distances
+                    .iter()
+                    .map(|i| i.to_string())
+                    .collect::<Vec<String>>()
+                    .join("")
+                    .parse::<usize>()
+                    .unwrap(),
+            ),
+        )
     }
 
     fn parse_line(input: &str) -> Vec<String> {
@@ -80,6 +98,7 @@ impl Race {
 
     fn ways_to_beat_the_record(&self) -> usize {
         (0..self.time)
+            .into_par_iter()
             .map(|i| {
                 let mm_per_second = i;
                 mm_per_second * (self.time - i)
@@ -101,11 +120,10 @@ mod tests {
         assert_eq!(result, 500346);
     }
 
-    #[ignore = "Not implemented yet"]
     #[test]
     fn part_2() {
         let day_6 = Day6::new();
         let result = day_6.part_2();
-        assert_eq!(result, 1);
+        assert_eq!(result, 42515755);
     }
 }

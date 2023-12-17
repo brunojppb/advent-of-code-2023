@@ -19,4 +19,5 @@ Here are my answers:
   - [x] [Part 1](/src/challenges/day_5.rs#L79)
   - [x] [Part 2](/src/challenges/day_5.rs#L102)
 - [x] [Day 6: Wait For It](https://adventofcode.com/2023/day/6)
-  - [x] [Part 1](/src/challenges/day_6.rs#L81)
+  - [x] [Part 1](/src/challenges/day_6.rs#L116)
+  - [x] [Part 1](/src/challenges/day_6.rs#L124)
