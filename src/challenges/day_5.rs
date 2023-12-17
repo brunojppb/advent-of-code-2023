@@ -9,7 +9,8 @@ impl Day5 {
 
     pub fn run(&self) {
         self.part_1();
-        self.part_2();
+        // @TODO: Figure out how to do it without brute-force
+        // self.part_2();
     }
 
     // See: https://adventofcode.com/2023/day/5
@@ -20,7 +21,8 @@ impl Day5 {
     }
 
     fn part_2(&self) {
-        println!("Part 2 - Result: {:?}", "TODO");
+        let almanac = self.parse();
+        println!("Part 2 - Result: {:?}", almanac.lowest_location_in_pairs());
     }
 
     fn parse(&self) -> Almanac {
@@ -94,6 +96,43 @@ impl Almanac {
         }
 
         *locations.iter().min().unwrap()
+    }
+
+    fn lowest_location_in_pairs(&self) -> usize {
+        let mut smallest_location: Option<usize> = None;
+
+        for (index, seed_or_range) in self.seeds.iter().enumerate() {
+            if index % 2 != 0 {
+                continue;
+            }
+
+            for seed in *seed_or_range..=(seed_or_range + self.seeds[index + 1]) {
+                let mut temp_position = seed;
+                println!("Checking seed {}", seed);
+
+                for map in &self.maps {
+                    for map_range in &map.ranges {
+                        let range = map_range.source..=(map_range.source + map_range.range);
+                        if range.contains(&temp_position) {
+                            let next_position =
+                                map_range.destination + (temp_position - map_range.source);
+                            temp_position = next_position;
+                            break;
+                        }
+                    }
+                }
+
+                if let Some(loc) = smallest_location {
+                    if temp_position < loc {
+                        smallest_location = Some(temp_position);
+                    }
+                } else {
+                    smallest_location = Some(temp_position);
+                }
+            }
+        }
+
+        smallest_location.unwrap()
     }
 }
 
